@@ -18,46 +18,41 @@ impl ListNode {
 
 // impl Solution {
     pub fn add_two_numbers(mut l1: Option<Box<ListNode>>, mut l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        // それぞれの値を取り出す
-        let mut num1:u128 = 0;
-        let mut num2:u128 = 0;
-        let mut mul_ratio:u128 = 1;
-        loop {
+        // 取り出した値を一つ一つ繰り上がりを考えながらresultに入れていく
+        let mut init_node = ListNode::new(0);
+        let mut prev_node = &mut init_node;
+        let mut is_move_up = false;
+        while l1.is_some() || l2.is_some() || is_move_up {
+            let mut l1_num = 0;
+            let mut l2_num = 0;
             match l1 {
-                Some(this_num) => {
-                    num1 += this_num.val as u128 * &mul_ratio;
-                    mul_ratio *= 10;
-                    l1 = this_num.next;
+                Some(l1_node) => {
+                    l1_num = l1_node.val;
+                    l1 = l1_node.next;
                 },
-                _ => {break;}
+                _ => {}
             }
-        }
-        mul_ratio = 1;
-        loop {
             match l2 {
-                Some(this_num) => {
-                    // println!("{}", this_num.val);
-                    num2 += this_num.val as u128 * &mul_ratio;
-                    mul_ratio *= 10;
-                    l2 = this_num.next;
+                Some(l2_node) => {
+                    l2_num = l2_node.val;
+                    l2 = l2_node.next;
                 },
-                _ => {break;}
+                _ => {}
             }
+            let sum_num = l1_num + l2_num + is_move_up as i32;
+            let this_node = Box::new(ListNode::new(sum_num % 10));
+            if sum_num >= 10 {
+                is_move_up = true;
+            } else {
+                is_move_up = false;
+            }
+
+            prev_node.next = Some(this_node);
+
+            prev_node = prev_node.next.as_mut().unwrap();
         }
-        // 足す
-        let sum1 = num1 + num2;
-        // println!("{}, {}, {}", num1, num2, sum1);
-        // 合計の値をLinkedListに正しい形で入れる
-        let str_sum1 = sum1.to_string();
-        let str_sum1_list: Vec<char> = str_sum1.chars().collect();
-        let mut prev_node: Option<Box<ListNode>> = None;
-        for i in str_sum1_list {
-            let num_i = i as i32 - 48;
-            let mut this_node = Box::new(ListNode::new(num_i));
-            this_node.next = prev_node;
-            prev_node = Some(this_node);
-        };
-        prev_node
+    init_node.next
+
     }
 // }
 
@@ -77,6 +72,12 @@ fn main() {
         l2 = Some(this_node);
     };
 
-     add_two_numbers(l1, l2);
+     let mut numbers = add_two_numbers(l1, l2);
+    while numbers.is_some() {
+        let this_num = numbers.unwrap();
+        print!("{}",this_num.val);
+        numbers = this_num.next;
+    }
+
 
 }
