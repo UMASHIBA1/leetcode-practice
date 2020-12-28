@@ -20,7 +20,9 @@ def median(A, B):
             imax = i - 1
         else:
             # i is perfect
+            # 最終的に求めたいモノ: 左の最大値 or 左の最大値と右の最小値
 
+            # 奇数の場合
             if i == 0:
                 max_of_left = B[j - 1]
             elif j == 0:
@@ -31,6 +33,7 @@ def median(A, B):
             if (m + n) % 2 == 1:
                 return max_of_left
 
+            # 偶数の場合
             if i == m:
                 min_of_right = B[j]
             elif j == n:
