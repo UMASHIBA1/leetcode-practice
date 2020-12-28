@@ -1,5 +1,7 @@
 use std::iter::FromIterator;
 
+// 反省点: 回文をカウントする時文字列を持たずに数字のカウントだけ持ってた方が良かった
+
 // impl Solution {
     pub fn longest_palindrome(s: String) -> String {
         let mut two_previous_char: char = '/';
