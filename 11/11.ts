@@ -1,13 +1,18 @@
 function maxArea(height: number[]): number {
 	let maxCapacity = 0;
-	for (let i1 = 0; i1 < height.length; i1++) {
-		const h1 = height[i1];
-		for (let i2 = 0; i2 < height.length; i2++) {
-			const h2 = height[i2];
-			const capacity = Math.min(h1,h2) * Math.abs(i1 - i2);
-			if (capacity > maxCapacity) {
-				maxCapacity = capacity;
-			}
+	let startIndex = 0;
+	let endIndex = height.length - 1;
+	for (let i = 0; i < height.length; i++) {
+		const h1 = height[startIndex];
+		const h2 = height[endIndex];
+		const capacity = Math.min(h1, h2) * (endIndex - startIndex);
+		if (capacity > maxCapacity) {
+			maxCapacity = capacity;
+		}
+		if(h1 > h2) {
+			endIndex--;
+		}else {
+			startIndex++;
 		}
 	}
 	return maxCapacity;
